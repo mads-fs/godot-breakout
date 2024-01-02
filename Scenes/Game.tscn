@@ -1,0 +1,139 @@
+[gd_scene load_steps=8 format=3 uid="uid://c2kg7q4flv548"]
+
+[ext_resource type="Script" path="res://Source/Game/GameManager.cs" id="1_xwspi"]
+[ext_resource type="PackedScene" uid="uid://dyr8nwfe1a2nb" path="res://Nodes/PelletNode.tscn" id="2_6uxpq"]
+[ext_resource type="FontFile" uid="uid://b5lr47w4x3kf3" path="res://Fonts/Kenney Mini.ttf" id="3_805tg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t25r0"]
+size = Vector2(40, 648)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxm7b"]
+size = Vector2(40, 940)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mbyf5"]
+size = Vector2(40, 648)
+
+[sub_resource type="Theme" id="Theme_ubpgb"]
+default_font = ExtResource("3_805tg")
+
+[node name="Root" type="Node" node_paths=PackedStringArray("pelletParent")]
+script = ExtResource("1_xwspi")
+pelletNodeScene = ExtResource("2_6uxpq")
+pelletParent = NodePath("PelletParent")
+firstPelletPosition = Vector2(86, 68)
+pelletXOffset = 32.0
+pelletYOffset = 64.0
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = -1
+anchor_top = 0.012
+anchor_right = 0.812
+anchor_bottom = 1.0
+offset_top = -7.776
+offset_right = 216.576
+color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+
+[node name="LeftWall" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 648.0
+color = Color(0.52549, 0.52549, 0.52549, 1)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Background/LeftWall"]
+
+[node name="LeftCollisionShape" type="CollisionShape2D" parent="Background/LeftWall/StaticBody2D"]
+position = Vector2(20, 325)
+shape = SubResource("RectangleShape2D_t25r0")
+
+[node name="Ceiling" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 940.0
+offset_right = 980.0
+offset_bottom = 939.0
+rotation = 1.5708
+color = Color(0.52549, 0.52549, 0.52549, 1)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Background/Ceiling"]
+
+[node name="CeilingCollisionShape" type="CollisionShape2D" parent="Background/Ceiling/StaticBody2D"]
+position = Vector2(20, 470)
+shape = SubResource("RectangleShape2D_bxm7b")
+
+[node name="RightWall" type="ColorRect" parent="Background"]
+layout_mode = 0
+offset_left = 900.0
+offset_right = 940.0
+offset_bottom = 648.0
+color = Color(0.52549, 0.52549, 0.52549, 1)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Background/RightWall"]
+
+[node name="RightCollisionShape" type="CollisionShape2D" parent="Background/RightWall/StaticBody2D"]
+position = Vector2(20, 324)
+shape = SubResource("RectangleShape2D_mbyf5")
+
+[node name="PelletParent" type="Node" parent="."]
+
+[node name="ScoreTextParent" type="Node" parent="."]
+
+[node name="ScoreLabel" type="RichTextLabel" parent="ScoreTextParent"]
+anchors_preset = -1
+anchor_left = 0.826
+anchor_top = 0.025
+anchor_right = 0.993
+anchor_bottom = 0.099
+offset_left = 0.447937
+offset_top = -0.200001
+offset_right = 0.0639648
+offset_bottom = -0.152008
+theme = SubResource("Theme_ubpgb")
+theme_override_font_sizes/normal_font_size = 35
+text = "Score"
+
+[node name="ScoreText" type="RichTextLabel" parent="ScoreTextParent"]
+anchors_preset = -1
+anchor_left = 0.826
+anchor_top = 0.086
+anchor_right = 0.993
+anchor_bottom = 0.148
+offset_left = 0.447937
+offset_top = 0.271999
+offset_right = 0.0639648
+offset_bottom = 0.0960007
+theme = SubResource("Theme_ubpgb")
+theme_override_font_sizes/normal_font_size = 35
+text = "0"
+scroll_active = false
+shortcut_keys_enabled = false
+
+[node name="LevelTextParent" type="Node" parent="."]
+
+[node name="LevelLabel" type="RichTextLabel" parent="LevelTextParent"]
+anchors_preset = -1
+anchor_left = 0.826
+anchor_top = 0.198
+anchor_right = 0.993
+anchor_bottom = 0.272
+offset_left = 0.447937
+offset_top = -0.304016
+offset_right = 0.0639648
+offset_bottom = -0.256012
+theme = SubResource("Theme_ubpgb")
+theme_override_font_sizes/normal_font_size = 35
+text = "Level"
+
+[node name="LevelText" type="RichTextLabel" parent="LevelTextParent"]
+anchors_preset = -1
+anchor_left = 0.826
+anchor_top = 0.259
+anchor_right = 0.993
+anchor_bottom = 0.321
+offset_left = 0.447937
+offset_top = 0.167999
+offset_right = 0.0639648
+offset_bottom = -0.00801086
+theme = SubResource("Theme_ubpgb")
+theme_override_font_sizes/normal_font_size = 35
+text = "0"
+scroll_active = false
+shortcut_keys_enabled = false
