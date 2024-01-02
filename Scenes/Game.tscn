@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://c2kg7q4flv548"]
+[gd_scene load_steps=10 format=3 uid="uid://c2kg7q4flv548"]
 
 [ext_resource type="Script" path="res://Source/Game/GameManager.cs" id="1_xwspi"]
 [ext_resource type="PackedScene" uid="uid://dyr8nwfe1a2nb" path="res://Nodes/PelletNode.tscn" id="2_6uxpq"]
 [ext_resource type="FontFile" uid="uid://b5lr47w4x3kf3" path="res://Fonts/Kenney Mini.ttf" id="3_805tg"]
+[ext_resource type="Texture2D" uid="uid://bfug3nk3u3xj2" path="res://Textures/pelletblank.png" id="4_5j2qb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t25r0"]
 size = Vector2(40, 648)
@@ -15,6 +16,9 @@ size = Vector2(40, 648)
 
 [sub_resource type="Theme" id="Theme_ubpgb"]
 default_font = ExtResource("3_805tg")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pdgf6"]
+size = Vector2(154, 32)
 
 [node name="Root" type="Node" node_paths=PackedStringArray("pelletParent")]
 script = ExtResource("1_xwspi")
@@ -137,3 +141,13 @@ theme_override_font_sizes/normal_font_size = 35
 text = "0"
 scroll_active = false
 shortcut_keys_enabled = false
+
+[node name="Paddle" type="Area2D" parent="."]
+position = Vector2(480, 552)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle"]
+shape = SubResource("RectangleShape2D_pdgf6")
+
+[node name="Sprite2D" type="Sprite2D" parent="Paddle/CollisionShape2D"]
+scale = Vector2(2.5, 1.07)
+texture = ExtResource("4_5j2qb")
