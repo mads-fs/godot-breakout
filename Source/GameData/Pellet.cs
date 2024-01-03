@@ -1,16 +1,14 @@
-﻿#pragma warning disable CA2211 // Non-constant fields should not be visible
-
-using Godot;
+﻿using Godot;
 using System;
 
 namespace Game.GameData
 {
-    public struct Pellet
+    public readonly struct Pellet
     {
-        public int Points { get { return points; } }
-        private int points = 1;
-        public Color @Color { get { return color; } }
-        private Color color = new(1f, 1f, 1f, 1f);
+        public readonly int Points { get { return points; } }
+        private readonly int points = 1;
+        public readonly Color @Color { get { return color; } }
+        private readonly Color color = new(1f, 1f, 1f, 1f);
 
         public Pellet(int points, Color color)
         {
@@ -24,7 +22,7 @@ namespace Game.GameData
         public static bool operator ==(Pellet p1, Pellet p2) => (p1.points == p2.points && p1.color == p2.color);
         public static bool operator !=(Pellet p1, Pellet p2) => (p1.points != p2.points && p1.color != p2.color);
 
-        public override int GetHashCode() => HashCode.Combine(points, color);
+        public readonly override int GetHashCode() => HashCode.Combine(points, color);
 
         public override bool Equals(object obj)
         {
