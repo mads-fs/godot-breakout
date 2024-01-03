@@ -24,6 +24,7 @@ default_font = ExtResource("3_805tg")
 
 [sub_resource type="Theme" id="Theme_ew74o"]
 default_font = ExtResource("3_805tg")
+default_font_size = 23
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8qhv2"]
 size = Vector2(9.00137, 29.1173)
@@ -194,18 +195,18 @@ scale = Vector2(2.5, 1.07)
 texture = ExtResource("4_5j2qb")
 
 [node name="Left3" type="CollisionShape2D" parent="Paddle"]
-position = Vector2(-73.5, -0.349976)
+position = Vector2(-73.5, 0.75)
 rotation = -0.0523599
 shape = SubResource("RectangleShape2D_8qhv2")
 
 [node name="Left2" type="CollisionShape2D" parent="Paddle"]
-position = Vector2(-59.35, -0.5)
+position = Vector2(-59.35, 0.5)
 rotation = -0.0349066
 shape = SubResource("RectangleShape2D_8a4q6")
 
 [node name="Left1" type="CollisionShape2D" parent="Paddle"]
-position = Vector2(-39.5, -1)
-rotation = -0.0174533
+position = Vector2(-39.5, -0.5)
+rotation = -0.0523599
 shape = SubResource("RectangleShape2D_nl0io")
 
 [node name="Center" type="CollisionShape2D" parent="Paddle"]
@@ -213,17 +214,17 @@ rotation = 1.5708
 shape = SubResource("RectangleShape2D_o1lgj")
 
 [node name="Right1" type="CollisionShape2D" parent="Paddle"]
-position = Vector2(39.5, -1)
-rotation = 0.0174533
+position = Vector2(39.5, -0.5)
+rotation = 0.0523599
 shape = SubResource("RectangleShape2D_nl0io")
 
 [node name="Right2" type="CollisionShape2D" parent="Paddle"]
-position = Vector2(59.35, -0.5)
-rotation = 0.0349066
+position = Vector2(59.35, 0.5)
+rotation = 0.0523599
 shape = SubResource("RectangleShape2D_8a4q6")
 
 [node name="Right3" type="CollisionShape2D" parent="Paddle"]
-position = Vector2(73.5, -0.35)
+position = Vector2(73.5, 0.75)
 rotation = 0.0523599
 shape = SubResource("RectangleShape2D_8qhv2")
 
