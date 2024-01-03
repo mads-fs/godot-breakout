@@ -6,12 +6,12 @@ namespace Game
 {
     public static class GameEvents
     {
+        public static Action OnPelletHit = delegate { };
         public static Action<int> OnScoreChange = delegate { };
         public static Action<int> OnLevelEnd = delegate { };
-        public static Action OnGamEnd = delegate { };
 
+        public static void BroadcastOnPelletHit() => OnPelletHit.Invoke();
         public static void BroadcastOnScoreChange(int score) => OnScoreChange.Invoke(score);
         public static void BroadcastOnLevelEnd(int newLevelIndex) => OnLevelEnd.Invoke(newLevelIndex);
-        public static void BroadcastOnGameEnd() => OnGamEnd.Invoke();
     }
 }
