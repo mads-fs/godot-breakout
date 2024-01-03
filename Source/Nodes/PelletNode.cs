@@ -2,7 +2,7 @@ using Godot;
 
 namespace Game.Nodes
 {
-	public partial class PelletNode : Area2D
+	public partial class PelletNode : StaticBody2D
 	{
 		public int Score { get { return score; } }
 		private int score;
