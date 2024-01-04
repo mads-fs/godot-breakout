@@ -21,6 +21,9 @@ namespace Game
         [Export] private float pelletYOffset;
         [Export] private Node2D endScreenNode;
         [Export] private int playerLives = 3;
+        [Export] private AudioStreamPlayer2D audioPlayer;
+        [Export] private AudioStreamWav impactSound;
+        [Export] private AudioStreamWav deathSound;
 
         public int Lives { get { return lives; } }
         private int lives;
@@ -37,6 +40,7 @@ namespace Game
                 this.endScreenNode.Visible = false;
                 this.lives = this.playerLives;
                 GameEvents.OnPelletHit += HandleOnPelletHit;
+                GameEvents.OnBallCollide += HandleOnBallCollide;
                 GameEvents.OnGameRestart += HandleOnGameRestart;
                 GameEvents.OnPlayerDeath += HandleOnPlayerDeath;
                 GameEvents.OnGameEnd += HandleOnGameEnd;
@@ -129,6 +133,13 @@ namespace Game
             }
         }
 
+        private void HandleOnBallCollide()
+        {
+            audioPlayer.Stop();
+            audioPlayer.Stream = impactSound;
+            audioPlayer.Play();
+        }
+
         private void HandleOnGameRestart()
         {
             this.levelIndex = -1;
@@ -140,6 +151,9 @@ namespace Game
 
         private void HandleOnPlayerDeath()
         {
+            audioPlayer.Stop();
+            audioPlayer.Stream = deathSound;
+            audioPlayer.Play();
             if (this.lives - 1 <= 0)
             {
                 GameEvents.BroadcastOnGameEnd();

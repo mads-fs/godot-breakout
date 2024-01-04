@@ -1,11 +1,13 @@
-[gd_scene load_steps=29 format=3 uid="uid://c2kg7q4flv548"]
+[gd_scene load_steps=31 format=3 uid="uid://c2kg7q4flv548"]
 
 [ext_resource type="Script" path="res://Source/Game/GameManager.cs" id="1_xwspi"]
 [ext_resource type="PackedScene" uid="uid://dyr8nwfe1a2nb" path="res://Nodes/PelletNode.tscn" id="2_6uxpq"]
+[ext_resource type="AudioStream" uid="uid://u3clbwdvd4y5" path="res://SFX/Impact.wav" id="3_0ymtg"]
 [ext_resource type="FontFile" uid="uid://b5lr47w4x3kf3" path="res://Fonts/Kenney Mini.ttf" id="3_805tg"]
 [ext_resource type="Texture2D" uid="uid://bfug3nk3u3xj2" path="res://Textures/pelletblank.png" id="4_5j2qb"]
 [ext_resource type="Script" path="res://Source/Nodes/Paddle.cs" id="4_at7me"]
 [ext_resource type="Script" path="res://Source/Nodes/ScoreUpdater.cs" id="4_exces"]
+[ext_resource type="AudioStream" uid="uid://cvbwpybyo76ss" path="res://SFX/Death.wav" id="4_o7dpu"]
 [ext_resource type="Script" path="res://Source/Nodes/Ball.cs" id="5_heamo"]
 [ext_resource type="Script" path="res://Source/Nodes/LevelUpdater.cs" id="5_rx6ub"]
 [ext_resource type="Script" path="res://Source/Nodes/LifeUpdater.cs" id="6_l0f58"]
@@ -68,7 +70,7 @@ default_font_size = 22
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vsar6"]
 size = Vector2(1910, 525)
 
-[node name="Root" type="Node" node_paths=PackedStringArray("pelletParent", "endScreenNode")]
+[node name="Root" type="Node" node_paths=PackedStringArray("pelletParent", "endScreenNode", "audioPlayer")]
 script = ExtResource("1_xwspi")
 pelletNodeScene = ExtResource("2_6uxpq")
 pelletParent = NodePath("PelletParent")
@@ -76,6 +78,13 @@ firstPelletPosition = Vector2(86, 68)
 pelletXOffset = 32.0
 pelletYOffset = 64.0
 endScreenNode = NodePath("EndScreen")
+audioPlayer = NodePath("AudioStreamPlayer2D")
+impactSound = ExtResource("3_0ymtg")
+deathSound = ExtResource("4_o7dpu")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
 [node name="Background" type="ColorRect" parent="."]
 anchors_preset = -1
@@ -237,10 +246,9 @@ theme = SubResource("Theme_ew74o")
 text = "W, D and SPACE for controls
 
 Credits:
+\"Kenney Mini\" Font by kenney.nl
 
-\"Kenney Mini\" Font by https://www.kenney.nl/
-
-"
+\"Impact\" and \"Death\" Sounds by freesound.org"
 
 [node name="Paddle" type="CharacterBody2D" parent="."]
 position = Vector2(470, 543)

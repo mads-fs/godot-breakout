@@ -8,6 +8,7 @@ namespace Game
     public static class GameEvents
     {
         public static Action OnBallRelease = delegate { };
+        public static Action OnBallCollide = delegate { };
         public static Action<PelletNode> OnPelletHit = delegate { };
         public static Action<int> OnScoreChange = delegate { };
         public static Action OnGameRestart = delegate { };
@@ -16,6 +17,7 @@ namespace Game
         public static Action OnPlayerDeath = delegate { };
 
         public static void BroadcastOnBallRelease() => OnBallRelease.Invoke();
+        public static void BroadcastOnBallCollide() => OnBallCollide.Invoke();
         public static void BroadcastOnPelletHit(PelletNode pellet) => OnPelletHit.Invoke(pellet);
         public static void BroadcastOnScoreChange(int score) => OnScoreChange.Invoke(score);
         public static void BroadcastOnGameRestart() => OnGameRestart.Invoke();

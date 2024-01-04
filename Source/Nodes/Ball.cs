@@ -39,6 +39,7 @@ namespace Game.Nodes
                 this.Velocity = this.direction * this.speed * (float)delta;
                 if (this.MoveAndCollide(this.Velocity) is KinematicCollision2D collision)
                 {
+                    GameEvents.BroadcastOnBallCollide();
                     this.direction = -this.direction.Reflect(collision.GetNormal());
                     if (collision.GetCollider() is Paddle)
                     {
