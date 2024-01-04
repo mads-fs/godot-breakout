@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c2kg7q4flv548"]
+[gd_scene load_steps=29 format=3 uid="uid://c2kg7q4flv548"]
 
 [ext_resource type="Script" path="res://Source/Game/GameManager.cs" id="1_xwspi"]
 [ext_resource type="PackedScene" uid="uid://dyr8nwfe1a2nb" path="res://Nodes/PelletNode.tscn" id="2_6uxpq"]
@@ -8,7 +8,10 @@
 [ext_resource type="Script" path="res://Source/Nodes/ScoreUpdater.cs" id="4_exces"]
 [ext_resource type="Script" path="res://Source/Nodes/Ball.cs" id="5_heamo"]
 [ext_resource type="Script" path="res://Source/Nodes/LevelUpdater.cs" id="5_rx6ub"]
+[ext_resource type="Script" path="res://Source/Nodes/LifeUpdater.cs" id="6_l0f58"]
 [ext_resource type="Texture2D" uid="uid://c3hef7w2m5rh4" path="res://Textures/ball.png" id="6_yqt6x"]
+[ext_resource type="Script" path="res://Source/Nodes/RestartButtonNode.cs" id="7_2jxyu"]
+[ext_resource type="Script" path="res://Source/Nodes/EndZone.cs" id="11_0gmvs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t25r0"]
 size = Vector2(40, 648)
@@ -41,13 +44,38 @@ size = Vector2(32, 60)
 [sub_resource type="CircleShape2D" id="CircleShape2D_mr0mw"]
 radius = 17.1172
 
-[node name="Root" type="Node" node_paths=PackedStringArray("pelletParent")]
+[sub_resource type="Theme" id="Theme_k55gm"]
+default_font = ExtResource("3_805tg")
+default_font_size = 31
+
+[sub_resource type="InputEventKey" id="InputEventKey_gs0xs"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="InputEventKey" id="InputEventKey_842qb"]
+device = -1
+pressed = true
+keycode = 4194309
+
+[sub_resource type="Shortcut" id="Shortcut_i3suc"]
+events = [SubResource("InputEventKey_gs0xs"), SubResource("InputEventKey_842qb")]
+
+[sub_resource type="Theme" id="Theme_jo4bn"]
+default_font = ExtResource("3_805tg")
+default_font_size = 22
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vsar6"]
+size = Vector2(1910, 525)
+
+[node name="Root" type="Node" node_paths=PackedStringArray("pelletParent", "endScreenNode")]
 script = ExtResource("1_xwspi")
 pelletNodeScene = ExtResource("2_6uxpq")
 pelletParent = NodePath("PelletParent")
 firstPelletPosition = Vector2(86, 68)
 pelletXOffset = 32.0
 pelletYOffset = 64.0
+endScreenNode = NodePath("EndScreen")
 
 [node name="Background" type="ColorRect" parent="."]
 anchors_preset = -1
@@ -97,7 +125,7 @@ color = Color(0.52549, 0.52549, 0.52549, 1)
 position = Vector2(20, 324)
 shape = SubResource("RectangleShape2D_mbyf5")
 
-[node name="PelletParent" type="Node" parent="."]
+[node name="PelletParent" type="Node2D" parent="."]
 
 [node name="ScoreTextParent" type="Node" parent="."]
 
@@ -121,10 +149,10 @@ anchor_left = 0.826
 anchor_top = 0.086
 anchor_right = 0.993
 anchor_bottom = 0.148
-offset_left = 0.447937
-offset_top = 0.271999
-offset_right = 0.0639648
-offset_bottom = 0.0960007
+offset_left = 0.447998
+offset_top = -9.728
+offset_right = 0.0640869
+offset_bottom = -9.904
 theme = SubResource("Theme_ubpgb")
 theme_override_font_sizes/normal_font_size = 35
 text = "0"
@@ -141,9 +169,9 @@ anchor_top = 0.198
 anchor_right = 0.993
 anchor_bottom = 0.272
 offset_left = 0.447998
-offset_top = -1.304
+offset_top = -43.304
 offset_right = 0.0640869
-offset_bottom = -1.256
+offset_bottom = -43.256
 theme = SubResource("Theme_ubpgb")
 theme_override_font_sizes/normal_font_size = 35
 text = "Level"
@@ -154,16 +182,49 @@ anchor_left = 0.826
 anchor_top = 0.259
 anchor_right = 0.993
 anchor_bottom = 0.321
-offset_left = 0.447937
-offset_top = 0.167999
-offset_right = 0.0639648
-offset_bottom = -0.00801086
+offset_left = 0.447998
+offset_top = -50.832
+offset_right = 0.0640869
+offset_bottom = -51.008
 theme = SubResource("Theme_ubpgb")
 theme_override_font_sizes/normal_font_size = 35
 text = "0"
 scroll_active = false
 shortcut_keys_enabled = false
 script = ExtResource("5_rx6ub")
+
+[node name="LifeTextParent" type="Node" parent="."]
+
+[node name="LifeLabel" type="RichTextLabel" parent="LifeTextParent"]
+anchors_preset = -1
+anchor_left = 0.826
+anchor_top = 0.198
+anchor_right = 0.993
+anchor_bottom = 0.272
+offset_left = 0.447998
+offset_top = 28.696
+offset_right = 0.0640869
+offset_bottom = 28.744
+theme = SubResource("Theme_ubpgb")
+theme_override_font_sizes/normal_font_size = 35
+text = "Lives"
+
+[node name="LifeText" type="RichTextLabel" parent="LifeTextParent"]
+anchors_preset = -1
+anchor_left = 0.826
+anchor_top = 0.259
+anchor_right = 0.993
+anchor_bottom = 0.321
+offset_left = 0.447998
+offset_top = 21.168
+offset_right = 0.0640869
+offset_bottom = 20.992
+theme = SubResource("Theme_ubpgb")
+theme_override_font_sizes/normal_font_size = 35
+text = "***"
+scroll_active = false
+shortcut_keys_enabled = false
+script = ExtResource("6_l0f58")
 
 [node name="InfoTextParent" type="Node" parent="."]
 
@@ -173,7 +234,7 @@ offset_top = 269.0
 offset_right = 1142.0
 offset_bottom = 637.0
 theme = SubResource("Theme_ew74o")
-text = "←, → and SPACE for controls
+text = "W, D and SPACE for controls
 
 Credits:
 
@@ -243,3 +304,49 @@ texture = ExtResource("6_yqt6x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
 shape = SubResource("CircleShape2D_mr0mw")
+
+[node name="EndScreen" type="Node2D" parent="."]
+visible = false
+
+[node name="EndGameText" type="RichTextLabel" parent="EndScreen"]
+offset_left = 66.0
+offset_top = 187.0
+offset_right = 888.0
+offset_bottom = 359.0
+theme = SubResource("Theme_k55gm")
+text = "Thank you for playing this little remake of an old Classic. This was a learning project to understand how to use Godot a little better. Feel free to use the source code in any way, as it is MIT licensed."
+
+[node name="RestartButton" type="TextureButton" parent="EndScreen"]
+offset_left = 396.0
+offset_top = 389.0
+offset_right = 544.0
+offset_bottom = 429.0
+shortcut = SubResource("Shortcut_i3suc")
+texture_normal = ExtResource("4_5j2qb")
+texture_pressed = ExtResource("4_5j2qb")
+texture_hover = ExtResource("4_5j2qb")
+stretch_mode = 0
+script = ExtResource("7_2jxyu")
+
+[node name="RestartButtonText" type="RichTextLabel" parent="EndScreen/RestartButton"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.182
+anchor_top = 0.125
+anchor_right = 0.818
+anchor_bottom = 0.85
+offset_left = 0.0639992
+offset_right = -0.064003
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_jo4bn")
+text = "Restart"
+
+[node name="EndZone" type="Area2D" parent="."]
+position = Vector2(470, 677)
+script = ExtResource("11_0gmvs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndZone"]
+position = Vector2(1, 252.5)
+shape = SubResource("RectangleShape2D_vsar6")
