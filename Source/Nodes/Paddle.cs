@@ -4,7 +4,7 @@ namespace Game.Nodes
 {
     public partial class Paddle : CharacterBody2D
     {
-        [Export] private float speed = 250;
+        [Export] private float speed = 275f;
 
         private Vector2 startPosition;
         private bool isAcceptingInput;
