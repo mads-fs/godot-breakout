@@ -10,7 +10,6 @@ namespace Game.Nodes
         private float speed;
         private Vector2 startPosition;
         private Vector2 direction = Vector2.Up;
-        private Vector2 velocityIncrease = Vector2.Zero;
         private bool isFollowingPaddle = true;
         private CharacterBody2D paddle;
 
@@ -58,14 +57,13 @@ namespace Game.Nodes
         {
             this.isFollowingPaddle = false;
             this.direction = Vector2.Up;
-            this.velocityIncrease = new(0f, -this.velocityIncrease.Y);
+            this.speed = this.initialSpeed;
         }
 
         private void HandleOnLevelEnd(int levelIndex)
         {
             this.isFollowingPaddle = true;
             this.direction = Vector2.Up;
-            this.velocityIncrease = Vector2.Zero;
         }
 
         private void HandleOnGameEnd()
