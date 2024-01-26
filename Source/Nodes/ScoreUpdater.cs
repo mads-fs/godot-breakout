@@ -2,6 +2,7 @@
 
 namespace Game.Nodes
 {
+    /// <summary>Used on a text component to update the Score display text automatically.</summary>
     public partial class ScoreUpdater : RichTextLabel
     {
         public override void _EnterTree() => GameEvents.OnScoreChange += HandleOnScoreEvent;

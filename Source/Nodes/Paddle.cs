@@ -38,7 +38,7 @@ namespace Game.Nodes
             {
                 velocityDelta = horizontal * speed * (float)delta;
             }
-            velocity = Mathf.Clamp(velocityDelta, -1, 1f);
+            this.velocity = Mathf.Clamp(velocityDelta, -1, 1f);
             this.MoveAndCollide(new(velocityDelta, 0f));
         }
 

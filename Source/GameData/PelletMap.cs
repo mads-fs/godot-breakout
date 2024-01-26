@@ -2,6 +2,7 @@
 
 namespace Game.GameData
 {
+    /// <summary>A holding class for <see cref="Pellet"/> data to represent a 2-dimensional level.</summary>
     public class PelletMap
     {
         public Pellet[,] Map { get { return map; } }

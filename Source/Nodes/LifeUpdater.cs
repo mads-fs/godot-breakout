@@ -1,23 +1,18 @@
 ﻿using Godot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Nodes
 {
+    /// <summary>Used on a text component to update the Life display text automatically.</summary>
     public partial class LifeUpdater : RichTextLabel
     {
         public override void _EnterTree()
         {
             GameEvents.OnPlayerDeath += HandleOnPlayerDeath;
-            GameEvents.OnGameRestart += HandleOnGameRestart;
         }
         public override void _ExitTree()
         {
             GameEvents.OnPlayerDeath -= HandleOnPlayerDeath;
-            GameEvents.OnGameRestart -= HandleOnGameRestart;
         }
         public override void _Ready() => HandleOnPlayerDeath();
 
@@ -25,7 +20,7 @@ namespace Game.Nodes
         {
             StringBuilder sb = new();
             int counter = 0;
-            while(counter < GameManager.Instance.Lives)
+            while (counter < GameManager.Instance.Lives)
             {
                 sb.Append('*');
                 counter++;

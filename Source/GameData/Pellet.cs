@@ -3,6 +3,7 @@ using System;
 
 namespace Game.GameData
 {
+    /// <summary>A Pellet data structure which is converted into a game representation at runtime when needed.</summary>
     public readonly struct Pellet
     {
         public readonly int Points { get { return points; } }
@@ -17,6 +18,7 @@ namespace Game.GameData
         }
 
         public override string ToString() => $"[{points}]";
+        /// <summary>Convenience structure for when we need no Pellet but still need data.</summary>
         public readonly static Pellet Empty = new(0, new Color(0f, 0f, 0f, 0f));
 
         public static bool operator ==(Pellet p1, Pellet p2) => (p1.points == p2.points && p1.color == p2.color);

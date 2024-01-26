@@ -31,17 +31,23 @@ namespace Game
         private int levelIndex = -1;
         private readonly List<PelletMap> levels = new();
 
+        private int pelletsHit = 0;
+        private int pelletsInLevel = 0;
+
+        private bool readInput = false;
+
         public override void _EnterTree()
         {
+            // Instantiating the GameManager as a singleton
             if (GameManager.Instance != null) Free();
             else
             {
                 instance = this;
                 this.endScreenNode.Visible = false;
                 this.lives = this.playerLives;
+                // We subscribe if the instance is valid
                 GameEvents.OnPelletHit += HandleOnPelletHit;
                 GameEvents.OnBallCollide += HandleOnBallCollide;
-                GameEvents.OnGameRestart += HandleOnGameRestart;
                 GameEvents.OnPlayerDeath += HandleOnPlayerDeath;
                 GameEvents.OnGameEnd += HandleOnGameEnd;
             }
@@ -49,29 +55,45 @@ namespace Game
 
         public override void _ExitTree()
         {
+            // In the event of an instance carrying over between scenes
+            // we unsubscribe here to not subscribe multiple times to the same events.
             GameEvents.OnPelletHit -= HandleOnPelletHit;
-            GameEvents.OnGameRestart -= HandleOnGameRestart;
             GameEvents.OnPlayerDeath -= HandleOnPlayerDeath;
             GameEvents.OnGameEnd -= HandleOnGameEnd;
         }
 
         public override void _Ready()
         {
+            this.readInput = true;
             this.GenerateLevels();
             this.NextLevel();
         }
 
+        public override void _Process(double delta)
+        {
+            if (this.readInput && Input.IsActionJustPressed("clear_level"))
+            {
+                this.ScoreManager.AddScore(this.pelletsInLevel);
+                this.pelletsHit = this.pelletsInLevel - 1;
+                this.HandleOnPelletHit(null);
+            }
+        }
+
+        /// <summary>Generate all levels from the pixel data found in the included PNG files ahead of time.</summary>
         private void GenerateLevels()
         {
             DirAccess access = DirAccess.Open(levelFolderPath);
             string[] files = access.GetFiles();
-            Color noColor = new(0f, 0f, 0f, 0f);
             foreach (string file in files)
             {
-                string fileExt = file.Split('.').Last().ToLower();
+                // We remove '.import' because Godot adds the extension when Exporting
+                // the game for Windows.
+                string cleanFile = file.Replace(".import", "");
+                string fileExt = cleanFile.Replace(".import", "").Split('.').Last().ToLower();
                 if (fileExt.Contains("png") && file.ToLower().Contains("level"))
                 {
-                    CompressedTexture2D texture = GD.Load<CompressedTexture2D>($"{levelFolderPath}/{file}");
+                    CompressedTexture2D texture = GD.Load<CompressedTexture2D>($"{levelFolderPath}/{cleanFile}");
+                    GD.Print(texture);
                     Image image = texture.GetImage();
                     int height = image.GetHeight();
                     int width = image.GetWidth();
@@ -81,7 +103,8 @@ namespace Game
                         for (int y = 0; y < width; y++)
                         {
                             Color color = image.GetPixel(y, x);
-                            Pellet pellet = color == noColor ? Pellet.Empty : new(1, color);
+                            // If alpha is zero, we consider it an empty pellet
+                            Pellet pellet = color.A == 0 ? Pellet.Empty : new(1, color);
                             map.Add(x, y, pellet);
                         }
                     }
@@ -90,6 +113,7 @@ namespace Game
             }
         }
 
+        /// <summary>Advances the Level Index by 1 and evaluates whether to continue the game or end it.</summary>
         private void NextLevel()
         {
             this.levelIndex += 1;
@@ -104,8 +128,19 @@ namespace Game
             }
         }
 
+        /// <summary>
+        /// Run at the start of every new round of the game to setup the current level previously generated with <see cref="GenerateLevels"/>
+        /// </summary>
         private void SetupLevel()
         {
+            // Free up existing Pellets on Level Clear.
+            for (int index = pelletParent.GetChildCount() - 1; index > -1; index--)
+            {
+                pelletParent.GetChild(index, true).QueueFree();
+            }
+            this.pelletsInLevel = 0;
+            this.pelletsHit = 0;
+
             PelletMap map = this.levels[this.levelIndex];
             for (int x = 0; x < map.Map.GetLength(0); x++)
             {
@@ -113,6 +148,7 @@ namespace Game
                 {
                     Pellet data = map.Map[x, y];
                     if (data == Pellet.Empty) continue;
+
                     Vector2 offset = new(pelletYOffset * y, pelletXOffset * x);
 
                     PelletNode pNode = (PelletNode)pelletNodeScene.Instantiate();
@@ -121,13 +157,15 @@ namespace Game
                     pNode.GlobalPosition = firstPelletPosition;
                     pNode.Initialize(data.Points, data.Color);
                     pNode.Translate(offset);
+                    this.pelletsInLevel += 1;
                 }
             }
         }
 
         private void HandleOnPelletHit(PelletNode pellet)
         {
-            if (this.pelletParent.GetChildCount() == 0)
+            this.pelletsHit += 1;
+            if (this.pelletsHit >= this.pelletsInLevel)
             {
                 this.NextLevel();
             }
@@ -143,6 +181,7 @@ namespace Game
         private void HandleOnGameRestart()
         {
             this.levelIndex = -1;
+            this.pelletsHit = 0;
             this.lives = playerLives;
             this.pelletParent.Visible = true;
             this.endScreenNode.Visible = false;
@@ -166,6 +205,7 @@ namespace Game
             this.lives = 0;
             this.pelletParent.Visible = false;
             this.endScreenNode.Visible = true;
+            this.readInput = false;
         }
     }
 }
